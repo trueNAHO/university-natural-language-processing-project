@@ -1,0 +1,23 @@
+= Natural Language Processing: Multimodal Harmful Meme Detection System
+:toc:
+
+== About
+
+Source tree of the _Multimodal Harmful Meme Detection System_ application.
+
+== Usage
+
+.Dependencies
+[%autowidth.center]
+|===
+| Package | Version
+
+| `python` | `3.12.7`
+|===
+
+To launch the application, run:
+
+[,bash]
+----
+src/main.py
+----
