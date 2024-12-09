@@ -1,4 +1,5 @@
 /.direnv/
 /.pre-commit-config.yaml
+/src/application/src/__pycache__/
 result
 result-*

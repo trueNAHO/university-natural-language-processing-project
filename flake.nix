@@ -68,18 +68,30 @@
 
           (
             inputs.asciidoctor-nix.mkOutputs {
-              checks.hooks = {
+              checks.hooks = let
+                excludes.marimo = [''^src/application/src/main\.py$''];
+              in {
                 autoflake.enable = true;
                 isort.enable = true;
-                mypy.enable = true;
-                pyright.enable = true;
+
+                mypy = {
+                  enable = true;
+                  excludes = excludes.marimo;
+                };
+
+                pyright = {
+                  enable = true;
+                  excludes = excludes.marimo;
+                };
+
                 ruff-format.enable = true;
                 ruff.enable = true;
               };
 
-              devShells.packages = lib.singleton (
-                pkgs.python3.withPackages (_: [])
-              );
+              devShells.packages = with pkgs; [
+                (python3.withPackages (_: []))
+                marimo
+              ];
 
               packages = {
                 inherit (inputs.self) lastModified;

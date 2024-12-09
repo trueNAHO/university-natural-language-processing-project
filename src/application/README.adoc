@@ -12,6 +12,7 @@ Source tree of the _Multimodal Harmful Meme Detection System_ application.
 |===
 | Package | Version
 
+| `marimo` | `0.9.14`
 | `python` | `3.12.7`
 |===
 
@@ -19,5 +20,5 @@ To launch the application, run:
 
 [,bash]
 ----
-src/main.py
+marimo run src/main.py
 ----
