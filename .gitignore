@@ -1,5 +1,7 @@
 /.direnv/
 /.pre-commit-config.yaml
+/src/application/assets
+/src/application/model_checkpoint/
 /src/application/src/__pycache__/
 result
 result-*
