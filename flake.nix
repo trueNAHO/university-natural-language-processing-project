@@ -68,29 +68,34 @@
 
           (
             inputs.asciidoctor-nix.mkOutputs {
-              checks.hooks = let
-                excludes.marimo = [''^src/application/src/main\.py$''];
-              in {
+              checks.hooks = {
                 autoflake.enable = true;
-                isort.enable = true;
-
-                mypy = {
-                  enable = true;
-                  excludes = excludes.marimo;
-                };
 
                 pyright = {
                   enable = true;
-                  excludes = excludes.marimo;
+                  excludes = [''^src/application/src/main\.py$''];
                 };
 
                 ruff-format.enable = true;
                 ruff.enable = true;
               };
 
-              devShells.packages = with pkgs; [
-                (python3.withPackages (_: []))
-                marimo
+              devShells.packages = [
+                (
+                  pkgs.python3.withPackages (
+                    ps:
+                      with ps; [
+                        clip
+                        pillow
+                        scikit-learn
+                        torch
+                        torchmetrics
+                        tqdm
+                      ]
+                  )
+                )
+
+                pkgs.marimo
               ];
 
               packages = {
