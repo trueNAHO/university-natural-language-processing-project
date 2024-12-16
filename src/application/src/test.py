@@ -1,6 +1,9 @@
+#!/usr/bin/env python
+
 import PIL.Image
 import clip
 import json
+import os
 import sklearn.metrics
 import torch
 import torchmetrics.classification
@@ -9,12 +12,12 @@ import tqdm
 device = "cuda:0" if torch.cuda.is_available() else "cpu"
 
 # Load test data
-with open("../assets/dev.jsonl", "r") as f:
+with open("assets/dev.jsonl", "r") as f:
     input_data = []
     img_paths = []
     text_paths = []
     labels = []
-    path = "../assets/"
+    path = "assets/"
     for line in f:
         obj = json.loads(line)
         input_data.append(obj)
@@ -22,9 +25,7 @@ with open("../assets/dev.jsonl", "r") as f:
         text_paths.append(obj["text"])
         labels.append(obj["label"])
 
-checkpoint = torch.load(
-    "../model_checkpoint/model_cross_product.pt", map_location=device
-)
+checkpoint = torch.load(".cache/model.pt", map_location=device)
 
 model, preprocess = clip.load("ViT-B/32", device=device, jit=False)
 
@@ -74,9 +75,11 @@ class Dataset(torch.utils.data.Dataset):
 
 
 test_dataset = Dataset(img_paths, text_paths)
+
 test_dataloader = torch.utils.data.DataLoader(
-    test_dataset, batch_size=128, num_workers=8
+    test_dataset, batch_size=2**13, num_workers=os.cpu_count()
 )
+
 auroc_metric = torchmetrics.classification.BinaryAUROC().to(device)
 all_predictions = []
 all_labels = []

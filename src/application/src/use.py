@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import PIL.Image
 import clip
 import sys
@@ -32,7 +34,7 @@ class CLIPCrossProductClassifier(torch.nn.Module):
 
 
 # Load the trained model checkpoint
-checkpoint_path = "../model_checkpoint/model_cross_product.pt"
+checkpoint_path = ".cache/model.pt"
 print(f"Loading model checkpoint from {checkpoint_path}...")
 checkpoint = torch.load(checkpoint_path, map_location=device)
 

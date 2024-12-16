@@ -1,18 +1,21 @@
+#!/usr/bin/env python
+
 import PIL.Image
 import clip
 import json
+import os
 import torch
 import tqdm
 
 device = "cuda:0" if torch.cuda.is_available() else "cpu"
 
 # Load training data
-with open("../assets/train.jsonl", "r") as f:
+with open("assets/train.jsonl", "r") as f:
     input_data = []
     img_paths = []
     text_data = []
     labels = []
-    path = "../assets/"
+    path = "assets/"
     for line in f:
         obj = json.loads(line)
         input_data.append(obj)
@@ -45,7 +48,7 @@ class Dataset(torch.utils.data.Dataset):
 
 dataset = Dataset(img_paths, text_data, labels)
 train_dataloader = torch.utils.data.DataLoader(
-    dataset, batch_size=64, shuffle=True, num_workers=6
+    dataset, batch_size=2**13, shuffle=True, num_workers=os.cpu_count()
 )
 
 
@@ -74,7 +77,7 @@ classifier = CLIPCrossProductClassifier(embedding_dim=embedding_dim).to(device)
 
 # Loss function and optimizer
 loss_fn = torch.nn.BCEWithLogitsLoss()
-optimizer = torch.optim.Adam(classifier.parameters(), lr=0.001)
+optimizer = torch.optim.Adam(classifier.parameters())
 
 # Training loop
 num_epochs = 20
@@ -99,7 +102,7 @@ for epoch in range(num_epochs):
         loss.backward()
         optimizer.step()
 
-        pbar.set_description(f"Epoch {epoch+1}/{num_epochs}, Loss: {loss.item():.4f}")
+        pbar.set_description(f"[{epoch+1}/{num_epochs}] Loss: {loss.item():.3f}")
 
 
 def save():
@@ -110,7 +113,7 @@ def save():
             "optimizer_state_dict": optimizer.state_dict(),
             "loss": loss,
         },
-        "../model_checkpoint/model_cross_product.pt",
+        ".cache/model.pt",
     )
 
 

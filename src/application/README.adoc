@@ -1,4 +1,5 @@
 = Natural Language Processing: Multimodal Harmful Meme Detection System
+:dataset: https://www.kaggle.com/datasets/parthplc/facebook-hateful-meme-dataset
 :toc:
 
 == About
@@ -6,6 +7,23 @@
 Source tree of the _Multimodal Harmful Meme Detection System_ application.
 
 == Usage
+
+Download and extract the link:{dataset}[_Facebook Hateful Meme Dataset_] dataset
+into `/assets`.
+
+To train the model, run:
+
+[,bash]
+----
+src/train.py
+----
+
+To test the model, run:
+
+[,bash]
+----
+src/test.py
+----
 
 To launch the application, run:
 
