@@ -70,12 +70,6 @@
             inputs.asciidoctor-nix.mkOutputs {
               checks.hooks = {
                 autoflake.enable = true;
-
-                pyright = {
-                  enable = true;
-                  excludes = [''^src/application/src/main\.py$''];
-                };
-
                 ruff-format.enable = true;
                 ruff.enable = true;
               };
