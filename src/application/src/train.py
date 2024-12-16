@@ -86,7 +86,7 @@ for epoch in range(num_epochs):
 
         images = images.to(device)
         texts = texts.to(device)
-        labels = torch.tensor(labels, dtype=torch.float32, device=device)
+        labels = labels.clone().detach().to(dtype=torch.float32, device=device)
 
         with torch.no_grad():
             image_embeds = clip_model.encode_image(images)
