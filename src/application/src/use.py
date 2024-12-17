@@ -50,7 +50,7 @@ def predict(image_path, text):
 # Main script
 if __name__ == "__main__":
     if len(sys.argv) != 3:
-        print("Usage: python use.py <image_path> <text>")
+        print(f"Usage: {sys.argv[0]} <IMAGE_PATH> <TEXT>")
         sys.exit(1)
 
     # Device configuration
