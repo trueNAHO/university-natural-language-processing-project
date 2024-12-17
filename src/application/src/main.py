@@ -83,7 +83,7 @@ def __(evaluate, harmful_threshold, image_file, image_text, mo, run):
 @app.cell
 def __(harmful, mo, probability):
     mo.md(
-        """Image with probability of {} is considered {}.""".format(
+        """Image with probability of {:.2%} is considered {}.""".format(
             probability, "harmful" if harmful else "unharmful"
         )
     )
