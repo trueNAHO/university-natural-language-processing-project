@@ -9,10 +9,11 @@ app = marimo.App()
 @app.cell
 def __():
     import marimo as mo
+    import tempfile
 
     from use import main as evaluate
 
-    return evaluate, mo
+    return evaluate, mo, tempfile
 
 
 @app.cell
@@ -23,16 +24,24 @@ def __(mo):
 
 @app.cell
 def __(mo):
-    image = mo.ui.text_area(full_width=True, label="Path to image.")
+    image = mo.ui.file(filetypes=["image/*"], kind="area")
     image
     return (image,)
 
 
 @app.cell
-def __(image, mo):
+def __(image, mo, tempfile):
     mo.stop(not len(image.value))
-    mo.image(image.value).center()
-    return
+
+    with tempfile.NamedTemporaryFile(mode="wb", delete=False) as file:
+        file.write(image.contents())
+        image_file = file.name
+
+    print(image, image_file)
+
+    print(type(image.contents()))
+    mo.image(image.contents()).center()
+    return file, image_file
 
 
 @app.cell
@@ -59,22 +68,26 @@ def __(mo):
 
 
 @app.cell
-def __(evaluate, harmful_threshold, image, image_text, mo, run):
+def __(evaluate, harmful_threshold, image_file, image_text, mo, run):
     mo.stop(
-        not run.value or not len(image.value) or image_text.value == "",
+        not run.value or not image_file or image_text.value == "",
         "Click `run` to submit the slider's value and make sure inputs are provided.",
     )
 
     probability, harmful = evaluate(
-        image.value, image_text.value, harmful_threshold.value
+        image_file, image_text.value, harmful_threshold.value
     )
+    return harmful, probability
 
+
+@app.cell
+def __(harmful, mo, probability):
     mo.md(
         """Image with probability of {} is considered {}.""".format(
             probability, "harmful" if harmful else "unharmful"
         )
     )
-    return harmful, probability
+    return
 
 
 if __name__ == "__main__":
