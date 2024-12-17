@@ -29,7 +29,7 @@ class CLIPCrossProductClassifier(torch.nn.Module):
 # Function to predict if an image-text pair is harmful
 def predict(image_path, text):
     # Preprocess the image
-    image = preprocess(PIL.Image.open(image_path))
+    image = preprocess(PIL.Image.open(image_path)).unsqueeze(0).to(device)
 
     # Tokenize the text
     text_tokenized = clip.tokenize([text], context_length=77).to(device)
