@@ -44,13 +44,13 @@ def predict(image_path, text):
         probs = torch.sigmoid(logits).item()
 
     # Return the label based on threshold
-    return "Harmful" if probs > 0.5 else "Not Harmful", probs
+    return probs
 
 
 # Main script
 if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        print(f"Usage: {sys.argv[0]} <IMAGE_PATH> <TEXT>")
+    if len(sys.argv) != 4:
+        print(f"Usage: {sys.argv[0]} <IMAGE_PATH> <TEXT> <HARMFUL_THRESHOLD>")
         sys.exit(1)
 
     # Device configuration
@@ -72,7 +72,11 @@ if __name__ == "__main__":
 
     image_path = sys.argv[1]
     text = sys.argv[2]
+    threshold = float(sys.argv[3])
 
     # Perform prediction
-    label, probability = predict(image_path, text)
-    print(f"Prediction: {label} (Probability: {probability:.2f})")
+    probability = predict(image_path, text)
+
+    label = "Harmful" if probability > threshold else "Not Harmful"
+
+    print(f"Probability: {probability:.2f} ({label})")

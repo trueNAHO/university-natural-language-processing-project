@@ -5,9 +5,16 @@ import clip
 import json
 import os
 import sklearn.metrics
+import sys
 import torch
 import torchmetrics.classification
 import tqdm
+
+if len(sys.argv) != 2:
+    print(f"Usage: {sys.argv[0]} <HARMFUL_THRESHOLD>")
+    sys.exit(1)
+
+threshold = float(sys.argv[1])
 
 device = "cuda:0" if torch.cuda.is_available() else "cpu"
 
@@ -97,7 +104,7 @@ with torch.no_grad():
         logits = classifier(image_embeds, text_embeds).squeeze(1)
         probs = torch.sigmoid(logits)
 
-        predictions = (probs > 0.5).long()
+        predictions = (probs > threshold).long()
         all_predictions.extend(predictions.cpu().numpy())
 
 all_labels = torch.tensor(labels).numpy()
