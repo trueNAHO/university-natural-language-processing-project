@@ -5,13 +5,6 @@ import clip
 import sys
 import torch
 
-# Device configuration
-device = "cuda:0" if torch.cuda.is_available() else "cpu"
-
-# Load the trained CLIP model
-print("Loading CLIP model...")
-model, preprocess = clip.load("ViT-B/32", device=device, jit=False)
-
 
 # Define the classifier architecture
 class CLIPCrossProductClassifier(torch.nn.Module):
@@ -31,17 +24,6 @@ class CLIPCrossProductClassifier(torch.nn.Module):
         cross_product = torch.bmm(image_embeds.unsqueeze(2), text_embeds.unsqueeze(1))
         logits = self.fc(cross_product)
         return logits
-
-
-# Load the trained model checkpoint
-checkpoint_path = ".cache/model.pt"
-print(f"Loading model checkpoint from {checkpoint_path}...")
-checkpoint = torch.load(checkpoint_path, map_location=device)
-
-embedding_dim = model.visual.output_dim
-classifier = CLIPCrossProductClassifier(embedding_dim=embedding_dim).to(device)
-classifier.load_state_dict(checkpoint["model_state_dict"])
-classifier.eval()
 
 
 # Function to predict if an image-text pair is harmful
@@ -70,6 +52,23 @@ if __name__ == "__main__":
     if len(sys.argv) != 3:
         print("Usage: python use.py <image_path> <text>")
         sys.exit(1)
+
+    # Device configuration
+    device = "cuda:0" if torch.cuda.is_available() else "cpu"
+
+    # Load the trained CLIP model
+    print("Loading CLIP model...")
+    model, preprocess = clip.load("ViT-B/32", device=device, jit=False)
+
+    # Load the trained model checkpoint
+    checkpoint_path = ".cache/model.pt"
+    print(f"Loading model checkpoint from {checkpoint_path}...")
+    checkpoint = torch.load(checkpoint_path, map_location=device)
+
+    embedding_dim = model.visual.output_dim
+    classifier = CLIPCrossProductClassifier(embedding_dim=embedding_dim).to(device)
+    classifier.load_state_dict(checkpoint["model_state_dict"])
+    classifier.eval()
 
     image_path = sys.argv[1]
     text = sys.argv[2]
