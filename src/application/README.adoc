@@ -9,7 +9,7 @@ Source tree of the _Multimodal Harmful Meme Detection System_ application.
 == Usage
 
 Download and extract the link:{dataset}[_Facebook Hateful Meme Dataset_] dataset
-into `/assets`.
+into `./assets`.
 
 To train the model, run:
 
