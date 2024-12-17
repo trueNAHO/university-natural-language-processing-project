@@ -27,7 +27,7 @@ class CLIPCrossProductClassifier(torch.nn.Module):
 
 
 # Function to predict if an image-text pair is harmful
-def predict(image_path, text):
+def predict(image_path, text, device, preprocess, model, classifier):
     # Preprocess the image
     image = preprocess(PIL.Image.open(image_path)).unsqueeze(0).to(device)
 
@@ -47,12 +47,7 @@ def predict(image_path, text):
     return probs
 
 
-# Main script
-if __name__ == "__main__":
-    if len(sys.argv) != 4:
-        print(f"Usage: {sys.argv[0]} <IMAGE_PATH> <TEXT> <HARMFUL_THRESHOLD>")
-        sys.exit(1)
-
+def main(image: str, text: str, harmful_threshold: float) -> tuple[float, bool]:
     # Device configuration
     device = "cuda:0" if torch.cuda.is_available() else "cpu"
 
@@ -70,13 +65,17 @@ if __name__ == "__main__":
     classifier.load_state_dict(checkpoint["model_state_dict"])
     classifier.eval()
 
-    image_path = sys.argv[1]
-    text = sys.argv[2]
-    threshold = float(sys.argv[3])
+    probability = predict(image, text, device, preprocess, model, classifier)
+    harmful = probability > harmful_threshold
 
-    # Perform prediction
-    probability = predict(image_path, text)
+    print(f"{probability:.2f} ({harmful})")
 
-    label = "Harmful" if probability > threshold else "Not Harmful"
+    return probability, harmful
 
-    print(f"Probability: {probability:.2f} ({label})")
+
+if __name__ == "__main__":
+    if len(sys.argv) != 4:
+        print(f"Usage: {sys.argv[0]} <IMAGE_PATH> <TEXT> <HARMFUL_THRESHOLD>")
+        sys.exit(1)
+
+    main(sys.argv[1], sys.argv[2], float(sys.argv[3]))
