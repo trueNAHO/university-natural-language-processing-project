@@ -8,11 +8,11 @@
         "reveal-js": "reveal-js"
       },
       "locked": {
-        "lastModified": 1733072437,
-        "narHash": "sha256-BXjqlPSQWQrhu4J/TFpWbsSIwrhWfyqc8gtYnGUZ/MU=",
+        "lastModified": 1734626619,
+        "narHash": "sha256-4Xapo+HErZnITUHIRzAg1a4i139ddPaOIUw//5g/Odc=",
         "owner": "trueNAHO",
         "repo": "asciidoctor.nix",
-        "rev": "4c29628063f28df4d19693ed519306c4a666a5e3",
+        "rev": "716858e129e70a1e4b9c701d4ebe01f54b93d0a9",
         "type": "github"
       },
       "original": {
