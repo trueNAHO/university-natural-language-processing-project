@@ -1,22 +1,63 @@
-= Presentation
-:sectnums:
+= Hate-CLIPper: Multimodal Hateful Meme Classification Based on Cross-modal Interaction of CLIP Features
+Gabriel Ny aintsoa Leclerc; Noah Pierre Biewesch
 
-include::{root}/partials/lorem_ipsum.adoc[leveloffset=+1]
+== Hateful Memes
 
-include::{root}/partials/lorem_ipsum.adoc[leveloffset=+2]
+[.stretch]
+image::{root}/images/my_computer_so_when_can_i_get_back_my_memory_me_who_didn_t_do_free_after_using_malloc_that_s_the_neat_part_you_don_t.png[align=center]
 
-include::{root}/partials/lorem_ipsum.adoc[leveloffset=+1]
+== State-of-the-Art Models
 
-include::{root}/partials/lorem_ipsum.adoc[leveloffset=+2]
+* Meme = Image + Text
+* Early and Late Fusion
+* Text is not a Caption
 
-include::{root}/partials/lorem_ipsum.adoc[leveloffset=+1]
+== Hate-CLIPper
 
-include::{root}/partials/lorem_ipsum.adoc[leveloffset=+2]
+* Contrastive Language-Image Pretraining (CLIP)
+* Relates Image and Text
+* Does not Require Additional Inputs (Bounding Boxes or Face Detection)
+* State-of-the-Art Performance in 14 Epochs with 4 Trainable Layers
 
-include::{root}/partials/lorem_ipsum.adoc[leveloffset=+1]
+=== !
 
-include::{root}/partials/lorem_ipsum.adoc[leveloffset=+2]
+[.stretch]
+image::{root}/images/figure_2.png[align=center]
 
-include::{root}/partials/lorem_ipsum.adoc[leveloffset=+1]
+== !
 
-include::{root}/partials/lorem_ipsum.adoc[leveloffset=+2]
+[.stretch]
+image::{root}/images/table_1.png[align=center]
+
+== !
+
+[.stretch]
+image::{root}/images/table_2.png[align=center]
+
+== Implementation
+
+[.center%autowidth]
+|===
+| AUROC | 61.20%
+| Accuracy | 61.20%
+| Precision | 75.45%
+| Recall | 33.20%
+| F1 Score | 46.11%
+|===
+
+=== !
+
+[.stretch]
+image::{root}/images/demonstration_unharmful_meme.png[align=center]
+
+=== !
+
+[.stretch]
+image::{root}/images/demonstration_harmful_meme.png[align=center]
+
+=== Source Code
+
+[.center]
+https://github.com/trueNAHO/university-natural-language-processing-project
+
+== Thanks for listening
