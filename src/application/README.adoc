@@ -22,7 +22,7 @@ To test the model, run:
 
 [,bash]
 ----
-src/test.py
+src/test.py <HARMFUL_THRESHOLD>
 ----
 
 To launch the application, run:
