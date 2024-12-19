@@ -37,9 +37,6 @@ def __(image, mo, tempfile):
         file.write(image.contents())
         image_file = file.name
 
-    print(image, image_file)
-
-    print(type(image.contents()))
     mo.image(image.contents()).center()
     return file, image_file
 
